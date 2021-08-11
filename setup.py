@@ -23,6 +23,7 @@ setup(
     install_requires=[
         "ip_address",
         "lib_cidr_trie",
+        "pytest",
     ],
     classifiers=[
         'Environment :: Console',
@@ -31,6 +32,4 @@ setup(
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 3'],
     entry_points={},
-    setup_requires=['pytest-runner'],
-    tests_require=['pytest'],
 )

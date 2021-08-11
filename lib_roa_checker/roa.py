@@ -1,6 +1,6 @@
 from ipaddress import ip_network
 
-from lib-cidr-trie import CIDRNode
+from lib_cidr_trie import CIDRNode
 
 from .roa_validity import ROAValidity
 

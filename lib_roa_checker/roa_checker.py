@@ -1,6 +1,7 @@
 from ipaddress import ip_network
 
 from .roa_tries import IPv4ROATrie, IPv6ROATrie
+from .roa_validity import ROAValidity
 
 
 class ROAChecker:

@@ -2,6 +2,7 @@ from ipaddress import ip_network
 from lib_cidr_trie import CIDRTrie
 
 from .roa import ROA
+from .roa_validity import ROAValidity
 
 
 class ROATrie(CIDRTrie):
