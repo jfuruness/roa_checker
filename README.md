@@ -16,14 +16,34 @@ This package contains a trie of ROAs for fast prefix-origin pair lookups
 ```python
 from ipaddress import ip_network
 
-from lib_roa_checker import ROAChecker, ROAValidity
+from lib_roa_checker import ROAChecker
+from lib_roa_validity import ROAValidity
 
 
-rpki = ROAChecker()
-# prefix, origin, max_length
-rpki.add_roa(ip_network("1.2.0.0/16", 1, 16)
+def test_tree():
+    trie = ROAChecker()
+    cidrs = [ip_network(x) for x in ["1.2.0.0/16", "1.2.3.0/24", "1.2.3.4"]]
+    origin = 1
+    for cidr in cidrs:
+        trie.insert(cidr, origin, cidr.prefixlen)
+    for cidr in cidrs:
+        assert trie.get_roa(cidr, origin).prefix == cidr
+        assert trie.get_validity(cidr, origin) == ROAValidity.VALID
 
-validity: ROAValidity = rpki.get_validity(ip_network("1.2.0.0/16", 1))
+    validity = trie.get_validity(ip_network("1.0.0.0/8"), origin)
+    assert validity == ROAValidity.UNKNOWN
+    validity = trie.get_validity(ip_network("255.255.255.255"), origin)
+    assert validity == ROAValidity.UNKNOWN
+    validity = trie.get_validity(ip_network("1.2.4.0/24"), origin)
+    assert validity == ROAValidity.INVALID_LENGTH
+    validity = trie.get_validity(ip_network("1.2.3.0/24"), origin + 1)
+    assert validity == ROAValidity.INVALID_ORIGIN
+    validity = trie.get_validity(ip_network("1.2.4.0/24"), origin + 1)
+    assert validity == ROAValidity.INVALID_LENGTH_AND_ORIGIN
+    validity = trie.get_validity(ip_network("1.2.0.255"), origin)
+    assert validity == ROAValidity.INVALID_LENGTH
+    validity = trie.get_validity(ip_network("1.3.0.0/16"), origin)
+    assert validity == ROAValidity.UNKNOWN
 ```
 
 ## Installation
@@ -48,7 +68,7 @@ To test the development package: [Testing](#testing)
 
 
 ## Testing
-* [lib\_cidr_trie](#lib_roa_checker)
+* [lib\_roa\_checker](#lib_roa_checker)
 
 You can test the package if in development by moving/cd into the directory where setup.py is located and running:
 (Note that you must have all dependencies installed first)
