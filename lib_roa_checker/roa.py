@@ -1,6 +1,6 @@
 from ipaddress import ip_network
 
-from lib_cidr_trie import CIDRNode
+from lib-cidr-trie import CIDRNode
 
 from .roa_validity import ROAValidity
 
@@ -16,6 +16,9 @@ class ROA(CIDRNode):
     def add_data(self, prefix: ip_network, origin: int, max_length: int):
         """Adds data to the node"""
 
+        # Make sure node was not previously set before
+        # If it was previously set, two ROAs conflict with each other
+        assert not any([self.prefix, self.origin, self.max_length])
         self.prefix = prefix
         self.origin = origin
         self.max_length = max_length
@@ -25,7 +28,7 @@ class ROA(CIDRNode):
 
         # Doing this for OO purposes even tho it should always be True
         if not prefix.subnet_of(self.prefix):
-            return ROAValidity.VALID
+            return ROAValidity.UNKNOWN
         else:
             if prefix.prefixlen > self.max_length:
                 if origin != self.origin:
