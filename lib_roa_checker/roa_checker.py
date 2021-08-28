@@ -19,7 +19,7 @@ class ROAChecker:
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
         return trie.insert(prefix, origin, max_length)
 
-    def get_roa(self, prefix: ip_network, origin: int):
+    def get_roa(self, prefix: ip_network, *args):
         """Gets the ROA covering prefix-origin pair"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie

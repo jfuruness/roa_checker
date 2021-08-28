@@ -1,4 +1,4 @@
-from ipaddress import ip_network
+from ipaddress import ip_network, IPv4Network, IPv6Network
 
 from lib_cidr_trie import CIDRNode
 
@@ -10,18 +10,18 @@ class ROA(CIDRNode):
         """Initializes the ROA node"""
 
         super(ROA, self).__init__(*args, **kwargs)
-        self.origin = None
-        self.max_length = None
+        self.origin_max_lengths = set()
 
     def add_data(self, prefix: ip_network, origin: int, max_length: int):
         """Adds data to the node"""
 
-        # Make sure node was not previously set before
-        # If it was previously set, two ROAs conflict with each other
-        assert not any([self.prefix, self.origin, self.max_length])
+        assert isinstance(prefix, (IPv4Network, IPv6Network))
+        assert isinstance(origin, int)
+        assert isinstance(max_length, (int, type(None)))
+        if max_length is None:
+            max_length = prefix.prefixlen
         self.prefix = prefix
-        self.origin = origin
-        self.max_length = max_length
+        self.origin_max_lengths.add((origin, max_length))
 
     def get_validity(self, prefix: ip_network, origin: int) -> ROAValidity:
         """Gets the ROA validity of a prefix origin pair"""
@@ -30,12 +30,7 @@ class ROA(CIDRNode):
         if not prefix.subnet_of(self.prefix):
             return ROAValidity.UNKNOWN
         else:
-            if prefix.prefixlen > self.max_length:
-                if origin != self.origin:
-                    return ROAValidity.INVALID_LENGTH_AND_ORIGIN
-                else:
-                    return ROAValidity.INVALID_LENGTH
-            elif origin != self.origin:
-                return ROAValidity.INVALID_ORIGIN
-            else:
-                return ROAValidity.VALID
+            for self_origin, max_length in self.origin_max_lengths:
+                if prefix.prefixlen > max_length or origin != self_origin:
+                    return ROAValidity.INVALID
+            return ROAValidity.VALID
