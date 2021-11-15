@@ -18,7 +18,7 @@ setup(
     keywords=["Furuness", "prefix", "cidr", "inet", "trie", "cidr-trie",
               "roas", "roas-trie", "ROA", "ROAs", "ROAs-trie"],
     include_package_data=True,
-    python_requires=">=3.8",
+    python_requires=">=3.7",
     packages=find_packages(),
     install_requires=[
         "ip_address",
