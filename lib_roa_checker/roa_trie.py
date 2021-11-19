@@ -15,6 +15,6 @@ class ROATrie(CIDRTrie):
 
         roa = self.get_most_specific_trie_supernet(prefix)
         if roa is None:
-            return ROAValidity.UNKNOWN
+            return ROAValidity.UNKNOWN, None
         else:
             return roa.get_validity(prefix, origin)

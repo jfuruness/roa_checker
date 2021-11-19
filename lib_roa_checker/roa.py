@@ -28,9 +28,9 @@ class ROA(CIDRNode):
 
         # Doing this for OO purposes even tho it should always be True
         if not prefix.subnet_of(self.prefix):
-            return ROAValidity.UNKNOWN
+            return ROAValidity.UNKNOWN, None
         else:
             for self_origin, max_length in self.origin_max_lengths:
                 if prefix.prefixlen > max_length or origin != self_origin:
-                    return ROAValidity.INVALID
-            return ROAValidity.VALID
+                    return ROAValidity.INVALID, self_origin != 0
+            return ROAValidity.VALID, True
