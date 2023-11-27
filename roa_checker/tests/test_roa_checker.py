@@ -11,9 +11,10 @@ def test_tree():
     for cidr in cidrs:
         trie.insert(cidr, routed_origin, cidr.prefixlen)
     for cidr in cidrs:
-        assert trie.get_roa(cidr, routed_origin).prefix == cidr
+        roa = trie.get_roa(cidr, routed_origin)
+        assert roa and roa.prefix == cidr
         validity, routed = trie.get_validity(cidr, routed_origin)
-        assert validity, routed == (
+        assert (validity, routed) == (
             ROAValidity.VALID,
             ROARouted.ROUTED,
         )
@@ -26,7 +27,8 @@ def test_tree():
     for cidr in non_routed_cidrs:
         trie.insert(cidr, non_routed_origin, cidr.prefixlen)
     for cidr in non_routed_cidrs:
-        assert trie.get_roa(cidr, non_routed_origin).prefix == cidr
+        roa = trie.get_roa(cidr, non_routed_origin)
+        assert roa and roa.prefix == cidr
         assert trie.get_validity(cidr, routed_origin) == (
             ROAValidity.INVALID_ORIGIN,
             ROARouted.NON_ROUTED,
