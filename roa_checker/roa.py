@@ -1,4 +1,4 @@
-from ipaddress import ip_network, IPv4Network, IPv6Network
+from ipaddress import IPv4Network, IPv6Network
 
 from lib_cidr_trie import CIDRNode
 
