@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class ROAValidity(Enum):
     VALID = 0
     UNKNOWN = 1
@@ -10,6 +11,7 @@ class ROAValidity(Enum):
     # And you select the most valid roa. So is invalid by length
     # more valid than invalid by origin? No. So we just say invalid
     INVALID = 2
+
 
 class ROARouted(Enum):
     ROUTED = 0

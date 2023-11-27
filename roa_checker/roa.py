@@ -21,7 +21,9 @@ class ROA(CIDRNode):
         self.prefix = prefix
         self.origin_max_lengths.add((origin, max_length))
 
-    def get_validity(self, prefix:  IPv4Network | IPv6Network, origin: int) -> tuple[ROAValidity, ROARouted]:
+    def get_validity(
+        self, prefix: IPv4Network | IPv6Network, origin: int
+    ) -> tuple[ROAValidity, ROARouted]:
         """Gets the ROA validity of a prefix origin pair"""
 
         if not prefix.subnet_of(self.prefix):

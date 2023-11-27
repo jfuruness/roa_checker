@@ -3,6 +3,7 @@ from ipaddress import ip_network
 from ..roa_checker import ROAChecker
 from ..roa_validity import ROAValidity
 
+
 def test_tree():
     trie = ROAChecker()
     cidrs = [ip_network(x) for x in ["1.2.0.0/16", "1.2.3.0/24", "1.2.3.4"]]

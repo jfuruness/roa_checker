@@ -12,7 +12,9 @@ class ROATrie(CIDRTrie[PrefixType]):
     def __init__(self, *args, NodeCls: type[ROA] = ROA, **kwargs) -> None:
         super(ROATrie, self).__init__(*args, NodeCls=NodeCls, **kwargs)
 
-    def get_validity(self, prefix: PrefixType, origin: int) -> tuple[ROAValidity, ROARouted]:
+    def get_validity(
+        self, prefix: PrefixType, origin: int
+    ) -> tuple[ROAValidity, ROARouted]:
         """Gets the validity of a prefix-origin pair"""
 
         roa = self.get_most_specific_trie_supernet(prefix)
