@@ -27,7 +27,7 @@ class ROAValidity(Enum):
 
     @staticmethod
     def is_unknown(roa_validity: "ROAValidity") -> bool:
-        return roa_validity == ROAValidity.UNKNONWN
+        return roa_validity == ROAValidity.UNKNOWN
 
     @staticmethod
     def is_invalid(roa_validity: "ROAValidity") -> bool:
