@@ -1,4 +1,4 @@
-# lib\_roa\_checker
+# roa\_checker
 This package contains a trie of ROAs for fast prefix-origin pair lookups
 
 * [Usage](#usage)
@@ -6,17 +6,15 @@ This package contains a trie of ROAs for fast prefix-origin pair lookups
 * [Testing](#testing)
 * [Development/Contributing](#developmentcontributing)
 * [History](#history)
-* [Credits](#credits)
 * [Licence](#license)
-* [TODO](#todo)
 
 ## Usage
-* [lib\_roa\_checker](#lib_roa_checker)
+* [roa\_checker](#roa_checker)
 
 ```python
 from ipaddress import ip_network
 
-from lib_roa_checker import ROAChecker
+from roa_checker import ROAChecker
 from lib_roa_validity import ROAValidity
 
 
@@ -47,58 +45,60 @@ def test_tree():
 ```
 
 ## Installation
-* [lib\_roa\_checker](#lib_roa_checker)
+* [roa\_checker](#roa_checker)
 
 Install python and pip if you have not already. Then run:
 
 ```bash
-pip3 install lib_roa_checker
+pip3 install roa_checker
 ```
 
 This will install the package and all of it's python dependencies.
 
 If you want to install the project for development:
 ```bash
-git clone https://github.com/jfuruness/lib_roa_checker.git
-cd lib_roa_checker
-python3 setup.py develop
+git clone https://github.com/jfuruness/roa_checker.git
+cd roa_checker
+pip3 install -e .[test]
+pre-commit install
 ```
 
 To test the development package: [Testing](#testing)
 
 
 ## Testing
-* [lib\_roa\_checker](#lib_roa_checker)
+* [roa\_checker](#roa_checker)
 
-You can test the package if in development by moving/cd into the directory where setup.py is located and running:
-(Note that you must have all dependencies installed first)
-```python3 setup.py test```
+After installation for development:
 
+```bash
+cd roa_checker
+python3 -m pytest roa_checker
+```
+
+To run all tests:
+
+```bash
+tox
+```
 
 ## Development/Contributing
-* [lib\_roa\_checker](#lib_roa_checker)
+* [roa\_checker](#roa_checker)
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request
-6. Email me at jfuruness@gmail.com because I don't check github messages
+6. Email me at jfuruness@gmail.com if I don't see it after a while
 
 ## History
-* [lib\_roa\_checker](#lib_roa_checker)
+* [roa\_checker](#roa_checker)
+* 1.0.0 Updated package structure, typing, linters, etc
 * 0.0.1 First working version
-
-## Credits
-* [lib\_roa\_checker](#lib_roa_checker)
 
 
 ## License
-* [lib\_roa\_checker](#lib_roa_checker)
+* [roa\_checker](#roa_checker)
 
 BSD License (see license file)
-
-## TODO
-* [lib\_roa\_checker](#lib_roa_checker)
-* Needs better testing
-* Would be nice to have some traversal funcs

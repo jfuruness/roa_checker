@@ -1,7 +1,8 @@
 from ipaddress import ip_network
 
+from .roa import ROA
 from .roa_tries import IPv4ROATrie, IPv6ROATrie
-from .roa_validity import ROAValidity
+from .enums import ROARouted, ROAValidity
 
 
 class ROAChecker:
@@ -19,13 +20,13 @@ class ROAChecker:
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
         return trie.insert(prefix, origin, max_length)
 
-    def get_roa(self, prefix: ip_network, *args):
+    def get_roa(self, prefix: ip_network, *args) -> ROA:
         """Gets the ROA covering prefix-origin pair"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
         return trie.get_most_specific_trie_supernet(prefix)
 
-    def get_validity(self, prefix: ip_network, origin: int) -> ROAValidity:
+    def get_validity(self, prefix: ip_network, origin: int) -> tuple[ROAValidity, ROARouted]:
         """Gets the validity of a prefix origin pair"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie

@@ -1,0 +1,86 @@
+[project]
+name = "roa_checker"
+version = "1.0.0"
+description = "Fast prefix origin pair lookups"
+readme = "README.md"
+authors = [
+    {name = "Justin Furuness", email = "jfuruness@gmail.com"},
+]
+license = {file = "LICENSE.txt"}
+keywords = [
+    "Furuness",
+    "prefix",
+    "cidr",
+    "inet",
+    "trie",
+    "cidr-trie",
+    "roas",
+    "roas-trie",
+    "ROAs",
+    "ROAs-trie",
+    "BGP",
+    "Hijack",
+    "ROA",
+    "ROV",
+]
+
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3"
+]
+requires-python = ">=3.10"
+dependencies = [
+    "lib_cidr_trie"
+]
+
+[project.urls]
+homepage = "https://github.com/jfuruness/roa_checker.git"
+
+
+[project.optional-dependencies]
+test = [
+    "black==23.7.0",
+    "pre-commit==3.3.3",
+    "types-requests==2.31.0",
+    "types-PyYAML==6.0.11",
+    "mypy==0.982",
+    "flake8==4.0.1",
+    "tox==4.6.3",
+    "pytest-xdist==2.5.0",
+    "ruff==0.0.275"
+]
+
+[tool.setuptools.package-data]
+roa_checker = ["py.typed"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.pytest.ini_options]
+python_files = "test*"
+python_classes = "Test*"
+python_functions = "test*"
+markers = [
+    "slow: All slow tests"
+]
+
+[tool.mypy]
+mypy_path = "roa_checker"
+check_untyped_defs = true
+disallow_any_generics = true
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+no_implicit_reexport = true
