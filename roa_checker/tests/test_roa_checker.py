@@ -1,6 +1,6 @@
 from ipaddress import ip_network
 
-from roa_checker import ROAChecker, ROARouted,  ROAValidity
+from roa_checker import ROAChecker, ROARouted, ROAValidity
 
 
 def test_tree():
@@ -12,7 +12,10 @@ def test_tree():
         trie.insert(cidr, routed_origin, cidr.prefixlen)
     for cidr in cidrs:
         assert trie.get_roa(cidr, routed_origin).prefix == cidr
-        assert trie.get_validity(cidr, routed_origin) == (ROAValidity.VALID, ROARouted.ROUTED)
+        assert trie.get_validity(cidr, routed_origin) == (
+            ROAValidity.VALID,
+            ROARouted.ROUTED,
+        )
 
     non_routed_cidrs = [ip_network(x) for x in ["2.2.0.0/16", "2.2.3.0/24", "2.2.3.4"]]
     non_routed_origin = 0
@@ -20,7 +23,10 @@ def test_tree():
         trie.insert(cidr, non_routed_origin, cidr.prefixlen)
     for cidr in non_routed_cidrs:
         assert trie.get_roa(cidr, non_routed_origin).prefix == cidr
-        assert trie.get_validity(cidr, non_routed_origin) == (ROAValidity.VALID, ROARouted.NON_ROUTED)
+        assert trie.get_validity(cidr, non_routed_origin) == (
+            ROAValidity.VALID,
+            ROARouted.NON_ROUTED,
+        )
 
     validity, routed = trie.get_validity(ip_network("1.0.0.0/8"), routed_origin)
     assert validity == ROAValidity.UNKNOWN

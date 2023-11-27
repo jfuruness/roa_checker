@@ -31,7 +31,11 @@ class ROAValidity(Enum):
 
     @staticmethod
     def is_invalid(roa_validity: "ROAValidity") -> bool:
-        return roa_validity in (ROAValidity.INVALID_LENGTH, ROAValidity.INVALID_ORIGIN, ROAValidity.INVALID_LENGTH_AND_ORIGIN)
+        return roa_validity in (
+            ROAValidity.INVALID_LENGTH,
+            ROAValidity.INVALID_ORIGIN,
+            ROAValidity.INVALID_LENGTH_AND_ORIGIN,
+        )
 
 
 class ROARouted(Enum):
