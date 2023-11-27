@@ -132,6 +132,7 @@ tox
 
 ## History
 * [roa\_checker](#roa_checker)
+* 1.0.0 Updated test deps
 * 1.0.0 Updated package structure, typing, linters, etc, made ROAValidity contains multiple invalid types
 * 0.0.1 First working version
 
