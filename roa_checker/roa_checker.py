@@ -1,6 +1,8 @@
-from ipaddress import ip_network
+from ipaddress import IPv4Network, IPv6Network
+from typing import Optional
 
 from .roa import ROA
+from .roa_trie import ROATrie
 from .roa_tries import IPv4ROATrie, IPv6ROATrie
 from .enums import ROARouted, ROAValidity
 
@@ -14,20 +16,23 @@ class ROAChecker:
         self.ipv4_trie = IPv4ROATrie()
         self.ipv6_trie = IPv6ROATrie()
 
-    def insert(self, prefix: ip_network, origin: int, max_length: int):
+    def insert(self, prefix: IPv4Network | IPv6Network, origin: int, max_length: Optional[int]) -> None:
         """Inserts a prefix into the tries"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
-        return trie.insert(prefix, origin, max_length)
+        # mypy struggling with this
+        return trie.insert(prefix, origin, max_length)  # type: ignore
 
-    def get_roa(self, prefix: ip_network, *args) -> ROA:
+    def get_roa(self, prefix: IPv4Network | IPv6Network, *args) -> ROA:
         """Gets the ROA covering prefix-origin pair"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
-        return trie.get_most_specific_trie_supernet(prefix)
+        roa = trie.get_most_specific_trie_supernet(prefix)
+        assert isinstance(roa, ROA), "for mypy"
+        return roa
 
     def get_validity(
-        self, prefix: ip_network, origin: int
+        self, prefix: IPv4Network | IPv6Network, origin: int
     ) -> tuple[ROAValidity, ROARouted]:
         """Gets the validity of a prefix origin pair"""
 

@@ -1,4 +1,5 @@
 from ipaddress import IPv4Network, IPv6Network
+from typing import Optional
 
 from lib_cidr_trie import CIDRNode
 
@@ -13,7 +14,7 @@ class ROA(CIDRNode):
         # Origin max length pairs
         self.origin_max_lengths: set[tuple[int, int]] = set()
 
-    def add_data(self, prefix: IPv4Network | IPv6Network, origin: int, max_length: int):
+    def add_data(self, prefix: IPv4Network | IPv6Network, origin: int, max_length: Optional[int]):
         """Adds data to the node"""
 
         if max_length is None:
@@ -26,7 +27,9 @@ class ROA(CIDRNode):
     ) -> tuple[ROAValidity, ROARouted]:
         """Gets the ROA validity of a prefix origin pair"""
 
-        if not prefix.subnet_of(self.prefix):
+        assert type(prefix) == type(self.prefix)
+        # Mypy isn't getting that these types are the same
+        if not prefix.subnet_of(self.prefix):  # type: ignore
             return ROAValidity.UNKNOWN, ROARouted.UNKNOWN
         else:
             for self_origin, max_length in self.origin_max_lengths:
@@ -34,5 +37,5 @@ class ROA(CIDRNode):
                     if self_origin == 0:
                         return ROAValidity.INVALID, ROARouted.NON_ROUTED
                     else:
-                        return ROAValidity.INVALID, ROARouted.Routed
+                        return ROAValidity.INVALID, ROARouted.ROUTED
             return ROAValidity.VALID, ROARouted.ROUTED
