@@ -18,7 +18,7 @@ class ROATrie(CIDRTrie[PrefixType]):
         """Gets the validity of a prefix-origin pair"""
 
         roa = self.get_most_specific_trie_supernet(prefix)
-        assert isinstance(roa, ROA), "mypy type check"
+        assert roa is None or isinstance(roa, ROA), "mypy type check"
         if roa:
             return roa.get_validity(prefix, origin)
         else:

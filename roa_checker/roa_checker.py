@@ -24,12 +24,12 @@ class ROAChecker:
         # mypy struggling with this
         return trie.insert(prefix, origin, max_length)  # type: ignore
 
-    def get_roa(self, prefix: IPv4Network | IPv6Network, *args) -> ROA:
+    def get_roa(self, prefix: IPv4Network | IPv6Network, *args) -> Optional[ROA]:
         """Gets the ROA covering prefix-origin pair"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
         roa = trie.get_most_specific_trie_supernet(prefix)
-        assert isinstance(roa, ROA), "for mypy"
+        assert roa is None or isinstance(roa, ROA), "for mypy"
         return roa
 
     def get_validity(
