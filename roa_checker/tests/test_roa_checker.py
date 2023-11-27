@@ -13,11 +13,13 @@ def test_tree():
     for cidr in cidrs:
         assert trie.get_roa(cidr, routed_origin).prefix == cidr
         validity, routed = trie.get_validity(cidr, routed_origin)
-        assert validity, routed == (ROAValidity.VALID, ROARouted.ROUTED,)
+        assert validity, routed == (
+            ROAValidity.VALID,
+            ROARouted.ROUTED,
+        )
         assert ROAValidity.is_unknown(validity) is False
         assert ROAValidity.is_invalid(validity) is False
         assert ROAValidity.is_valid(validity) is True
-
 
     non_routed_cidrs = [ip_network(x) for x in ["2.2.0.0/16", "2.2.3.0/24", "2.2.3.4"]]
     non_routed_origin = 0
