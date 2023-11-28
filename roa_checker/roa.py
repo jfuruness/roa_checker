@@ -14,7 +14,8 @@ class ROA(CIDRNode):
         # Origin max length pairs
         self.origin_max_lengths: set[tuple[int, int]] = set()
 
-    def add_data(
+    # Mypy doesn't understand *args in super class
+    def add_data(  # type: ignore
         self, prefix: IPv4Network | IPv6Network, origin: int, max_length: Optional[int]
     ):
         """Adds data to the node"""

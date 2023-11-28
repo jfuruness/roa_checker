@@ -1,7 +1,10 @@
 from ipaddress import IPv4Network, IPv6Network
 from typing import Optional
 
+from lib_cidr_trie import CIDRTrie
+
 from .roa import ROA
+from .roa_trie import ROATrie
 from .roa_tries import IPv4ROATrie, IPv6ROATrie
 from .enums import ROARouted, ROAValidity
 
@@ -28,6 +31,7 @@ class ROAChecker:
         """Gets the ROA covering prefix-origin pair"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
+        assert isinstance(trie, CIDRTrie)
         roa = trie.get_most_specific_trie_supernet(prefix)
         assert roa is None or isinstance(roa, ROA), "for mypy"
         return roa
@@ -38,4 +42,5 @@ class ROAChecker:
         """Gets the validity of a prefix origin pair"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
+        assert isinstance(trie, ROATrie), "for mypy"
         return trie.get_validity(prefix, origin)
