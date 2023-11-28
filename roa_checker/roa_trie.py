@@ -11,7 +11,7 @@ class ROATrie(CIDRTrie[PrefixType]):
     # Just changing the defaults here to ROA instead of CIDRNode
     def __init__(self, *args, NodeCls: type[ROA] = ROA, **kwargs) -> None:
         # mypy doesn't understand that I can reset the default arg in this way
-        super(ROATrie, self).__init__(*args, NodeCls=NodeCls, **kwargs) # type: ignore
+        super(ROATrie, self).__init__(*args, NodeCls=NodeCls, **kwargs)  # type: ignore
 
     def get_validity(
         self, prefix: PrefixType, origin: int
