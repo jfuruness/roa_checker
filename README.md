@@ -140,6 +140,7 @@ tox
 
 ## History
 * [roa\_checker](#roa_checker)
+* 1.1.4 Bug fix for multiple ROA case where multiple ROAs would result in the least valid ROA being selected, rather than the most valid ROA being selected
 * 1.1.3 Dependency updates
 * 1.1.2 Added ROA to top level import
 * 1.1.1 mypy and linter fixes

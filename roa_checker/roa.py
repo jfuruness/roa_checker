@@ -6,6 +6,17 @@ from lib_cidr_trie import CIDRNode
 from .enums import ROARouted, ROAValidity
 
 
+@dataclass(frozen=True, slots=True)
+class ROAOutcome:
+    validity: ROAValidity
+    routed: ROARouted
+
+    def __lt__(self, other) -> bool
+        if isinstance(other, ROAOutcome):
+            return self.validity.value < other.validity.value
+        else:
+            return NotImplemented
+
 class ROA(CIDRNode):
     def __init__(self, *args, **kwargs):
         """Initializes the ROA node"""
@@ -28,35 +39,49 @@ class ROA(CIDRNode):
     def get_validity(
         self, prefix: IPv4Network | IPv6Network, origin: int
     ) -> tuple[ROAValidity, ROARouted]:
-        """Gets the ROA validity of a prefix origin pair"""
+        """Gets the ROA validity of a prefix origin pair
+
+        This gets pretty complicated because we need to calculate
+        both validiate and routed, and there can be multiple ROAs
+        for the same announcement.
+
+        In other words, we need to calculate the best ROA for a given
+        announcement, and then use the validity of that ROA. Ie
+        the "most valid" ROA is the one that should be used.
+        """
 
         assert isinstance(prefix, type(self.prefix))
         # Mypy isn't getting that these types are the same
         if not prefix.subnet_of(self.prefix):  # type: ignore
             return ROAValidity.UNKNOWN, ROARouted.UNKNOWN
         else:
-            valid_length = True
-            valid_origin = True
-            routed = ROARouted.ROUTED
-            # NOTE: There can be multiple ROAs for the same prefix
-            # So if we say a ROA is invalid by length and origin
-            # it could potentially be invalid by length for one ROA
-            # and invalid by origin for another prefix
-            # If we say non routed, it's violating at least one non routed ROA
+            roa_validities = list()
+
             for self_origin, max_length in self.origin_max_lengths:
-                if prefix.prefixlen > max_length:
-                    valid_length = False
-                    if self_origin == 0:
-                        routed = ROARouted.NON_ROUTED
-                if origin != self_origin:
-                    valid_origin = False
-                    if self_origin == 0:
-                        routed = ROARouted.NON_ROUTED
-            if valid_length and valid_origin:
-                return ROAValidity.VALID, routed
-            elif valid_length and not valid_origin:
-                return ROAValidity.INVALID_ORIGIN, routed
-            elif not valid_length and valid_origin:
-                return ROAValidity.INVALID_LENGTH, routed
-            else:
-                return ROAValidity.INVALID_LENGTH_AND_ORIGIN, routed
+                routed = ROARouted.NON_ROUTED if self_orgin == 0 else ROARouted.ROUTED
+                if prefix.prefixlen > max_length and origin != self_origin:
+                    roa_validities.append(
+                        ROAOutcome(
+                            ROAValidity.INVALID_LENGTH_AND_ORIGIN, routed
+                        )
+                    )
+                elif prefix.prefixlen > max_length and origin == self_origin:
+                    roa_validities.append(
+                        ROAOutcome(
+                            ROAValidity.INVALID_LENGTH, routed
+                        )
+                    )
+                elif prefix.prefixlen <= max_length and origin != self_origin:
+                    roa_validities.append(
+                        ROAOutcome(
+                            ROAValidity.INVALID_ORIGIN, routed
+                        )
+                    )
+                elif prefix.prefixlen <= max_length and origin == self_origin:
+                    roa_validities.append(ROAOutcome(ROAValidity.VALIDITY, routed))
+                else:
+                    raise NotImplementedError("This should never happen")
+
+            best_outcome = sorted(roa_validities)[0]
+            raise NotImplementedError("Test every branch of this")
+            return best_outcome.validity, best_outcome.routed

@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class ROAValidity(Enum):
+    # NOTE: These values double as "scores" for validity,
+    # so do NOT change the order
+    # (used in the ROA class)
     VALID = 0
     UNKNOWN = 1
     # Note that we cannot differentiate between invalid by length
