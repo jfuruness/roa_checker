@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from ipaddress import IPv4Network, IPv6Network
 from typing import Optional
 
@@ -11,11 +12,12 @@ class ROAOutcome:
     validity: ROAValidity
     routed: ROARouted
 
-    def __lt__(self, other) -> bool
+    def __lt__(self, other) -> bool:
         if isinstance(other, ROAOutcome):
             return self.validity.value < other.validity.value
         else:
             return NotImplemented
+
 
 class ROA(CIDRNode):
     def __init__(self, *args, **kwargs):
@@ -27,7 +29,10 @@ class ROA(CIDRNode):
 
     # Mypy doesn't understand *args in super class
     def add_data(  # type: ignore
-        self, prefix: IPv4Network | IPv6Network, origin: int, max_length: Optional[int]
+        self,
+        prefix: IPv4Network | IPv6Network,
+        origin: int,
+        max_length: Optional[int] = None,
     ):
         """Adds data to the node"""
 
@@ -58,30 +63,23 @@ class ROA(CIDRNode):
             roa_validities = list()
 
             for self_origin, max_length in self.origin_max_lengths:
-                routed = ROARouted.NON_ROUTED if self_orgin == 0 else ROARouted.ROUTED
+                routed = ROARouted.NON_ROUTED if self_origin == 0 else ROARouted.ROUTED
                 if prefix.prefixlen > max_length and origin != self_origin:
                     roa_validities.append(
-                        ROAOutcome(
-                            ROAValidity.INVALID_LENGTH_AND_ORIGIN, routed
-                        )
+                        ROAOutcome(ROAValidity.INVALID_LENGTH_AND_ORIGIN, routed)
                     )
                 elif prefix.prefixlen > max_length and origin == self_origin:
                     roa_validities.append(
-                        ROAOutcome(
-                            ROAValidity.INVALID_LENGTH, routed
-                        )
+                        ROAOutcome(ROAValidity.INVALID_LENGTH, routed)
                     )
                 elif prefix.prefixlen <= max_length and origin != self_origin:
                     roa_validities.append(
-                        ROAOutcome(
-                            ROAValidity.INVALID_ORIGIN, routed
-                        )
+                        ROAOutcome(ROAValidity.INVALID_ORIGIN, routed)
                     )
                 elif prefix.prefixlen <= max_length and origin == self_origin:
-                    roa_validities.append(ROAOutcome(ROAValidity.VALIDITY, routed))
+                    roa_validities.append(ROAOutcome(ROAValidity.VALID, routed))
                 else:
                     raise NotImplementedError("This should never happen")
 
             best_outcome = sorted(roa_validities)[0]
-            raise NotImplementedError("Test every branch of this")
             return best_outcome.validity, best_outcome.routed
