@@ -140,6 +140,10 @@ tox
 
 ## History
 * [roa\_checker](#roa_checker)
+* 2.0.0
+    * Previously the ROA checker would only look at the ROAs that were the most specific prefix (and then would check all of those ROAs)
+        * This is a problem because if there were two ROAs, one that is less specific and valid, and one that is more specific and invalid, the announcements would be considered invalid incorrectly.
+        * Fixing this unfortunately causes some of the public methods to change (they were wrong before anyways) like get_roa (you can't get a ROA for a prefix, you need to get all ROAs for that prefix)
 * 1.1.4 Bug fix for multiple ROA case where multiple ROAs would result in the least valid ROA being selected, rather than the most valid ROA being selected. Thanks for finding this Cameron Morris!
 * 1.1.3 Dependency updates
 * 1.1.2 Added ROA to top level import

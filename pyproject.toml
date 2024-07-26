@@ -1,6 +1,6 @@
 [project]
 name = "roa_checker"
-version = "1.1.4"
+version = "2.0.0"
 description = "Fast prefix origin pair lookups"
 readme = "README.md"
 authors = [
