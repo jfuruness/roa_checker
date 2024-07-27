@@ -22,7 +22,7 @@ class ROAChecker:
         # mypy struggling with this
         return trie.insert(prefix, roa)  # type: ignore
 
-    def get_roas(self, prefix: IPv4Network | IPv6Network) -> frozenset[ROA]:
+    def get_relevant_roas(self, prefix: IPv4Network | IPv6Network) -> frozenset[ROA]:
         """Gets the ROA covering prefix-origin pair"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie

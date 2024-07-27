@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from functools import cached_property
 from ipaddress import IPv4Network, IPv6Network
+from typing import Optional
 
 from .enums_and_dataclasses import ROAOutcome, ROARouted, ROAValidity
 
@@ -10,6 +11,8 @@ class ROA:
     prefix: IPv4Network | IPv6Network
     origin: int
     max_length: int = None  # type: ignore
+    # RIPE, ARIN, etc. Used by ROACollector, don't remove
+    ta: Optional[str] = None
 
     def __post_init__(self) -> None:
         if self.max_length is None:  # type: ignore
@@ -18,8 +21,16 @@ class ROA:
             )
 
     @cached_property
-    def routed(self) -> ROARouted:
-        return ROARouted.NON_ROUTED if self.origin == 0 else ROARouted.ROUTED
+    def routed_status(self) -> ROARouted:
+        return ROARouted.ROUTED if self.is_routed else ROARouted.NON_ROUTED
+
+    @cached_property
+    def is_routed(self) -> bool:
+        return self.origin != 0
+
+    @cached_property
+    def is_non_routed(self) -> bool:
+        return not self.is_routed
 
     def covers_prefix(self, prefix: IPv4Network | IPv6Network) -> bool:
         """Returns True if the ROA covers the prefix"""
@@ -50,4 +61,4 @@ class ROA:
         """Returns outcome of prefix origin pair"""
 
         validity = self.get_validity(prefix, origin)
-        return ROAOutcome(validity=validity, routed=self.routed)
+        return ROAOutcome(validity=validity, routed_status=self.routed_status)

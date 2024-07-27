@@ -27,40 +27,40 @@ def test_tree():
 
     outcome = trie.get_roa_outcome(ip_network("1.0.0.0/8"), routed_origin)
     assert outcome.validity == ROAValidity.UNKNOWN
-    assert outcome.routed == ROARouted.UNKNOWN
+    assert outcome.routed_status == ROARouted.UNKNOWN
     outcome = trie.get_roa_outcome(ip_network("255.255.255.255"), routed_origin)
     assert outcome.validity == ROAValidity.UNKNOWN
-    assert outcome.routed == ROARouted.UNKNOWN
+    assert outcome.routed_status == ROARouted.UNKNOWN
     assert ROAValidity.is_unknown(outcome.validity) is True
     assert ROAValidity.is_invalid(outcome.validity) is False
     assert ROAValidity.is_valid(outcome.validity) is False
     outcome = trie.get_roa_outcome(ip_network("1.2.4.0/24"), routed_origin)
     assert outcome.validity == ROAValidity.INVALID_LENGTH
-    assert outcome.routed == ROARouted.ROUTED
+    assert outcome.routed_status == ROARouted.ROUTED
     assert ROAValidity.is_unknown(outcome.validity) is False
     assert ROAValidity.is_invalid(outcome.validity) is True
     assert ROAValidity.is_valid(outcome.validity) is False
     outcome = trie.get_roa_outcome(ip_network("1.2.3.0/24"), routed_origin + 1)
     assert outcome.validity == ROAValidity.INVALID_ORIGIN
-    assert outcome.routed == ROARouted.ROUTED
+    assert outcome.routed_status == ROARouted.ROUTED
     assert ROAValidity.is_unknown(outcome.validity) is False
     assert ROAValidity.is_invalid(outcome.validity) is True
     assert ROAValidity.is_valid(outcome.validity) is False
     outcome = trie.get_roa_outcome(ip_network("1.2.4.0/24"), routed_origin + 1)
     assert outcome.validity == ROAValidity.INVALID_LENGTH_AND_ORIGIN
-    assert outcome.routed == ROARouted.ROUTED
+    assert outcome.routed_status == ROARouted.ROUTED
     assert ROAValidity.is_unknown(outcome.validity) is False
     assert ROAValidity.is_invalid(outcome.validity) is True
     assert ROAValidity.is_valid(outcome.validity) is False
     outcome = trie.get_roa_outcome(ip_network("1.2.0.255"), routed_origin)
     assert outcome.validity == ROAValidity.INVALID_LENGTH
-    assert outcome.routed == ROARouted.ROUTED
+    assert outcome.routed_status == ROARouted.ROUTED
     outcome = trie.get_roa_outcome(ip_network("1.3.0.0/16"), routed_origin)
     assert outcome.validity == ROAValidity.UNKNOWN
-    assert outcome.routed == ROARouted.UNKNOWN
+    assert outcome.routed_status == ROARouted.UNKNOWN
     outcome = trie.get_roa_outcome(ip_network("1.2.0.255"), routed_origin)
     assert outcome.validity == ROAValidity.INVALID_LENGTH
-    assert outcome.routed == ROARouted.ROUTED
+    assert outcome.routed_status == ROARouted.ROUTED
 
 
 def test_multiple_differing_roas():

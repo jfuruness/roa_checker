@@ -59,4 +59,6 @@ class ROATrie(CIDRTrie[PrefixType]):
             assert isinstance(rv, ROAOutcome), "for mypy"
             return rv
         else:
-            return ROAOutcome(validity=ROAValidity.UNKNOWN, routed=ROARouted.UNKNOWN)
+            return ROAOutcome(
+                validity=ROAValidity.UNKNOWN, routed_status=ROARouted.UNKNOWN
+            )

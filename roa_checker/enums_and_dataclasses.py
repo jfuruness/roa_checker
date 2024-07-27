@@ -50,7 +50,7 @@ class ROARouted(Enum):
 @dataclass(frozen=True, slots=True)
 class ROAOutcome:
     validity: ROAValidity
-    routed: ROARouted
+    routed_status: ROARouted
 
     def __lt__(self, other) -> bool:
         if isinstance(other, ROAOutcome):
