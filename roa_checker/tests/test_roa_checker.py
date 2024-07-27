@@ -62,6 +62,7 @@ def test_tree():
     assert outcome.validity == ROAValidity.INVALID_LENGTH
     assert outcome.routed == ROARouted.ROUTED
 
+
 def test_multiple_differing_roas():
     """Testing that all ROAs are considered
 
