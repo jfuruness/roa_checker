@@ -11,13 +11,8 @@ def test_tree():
     for cidr in cidrs:
         trie.insert(cidr, routed_origin, cidr.prefixlen)
     for cidr in cidrs:
-        roa = trie.get_roa(cidr, routed_origin)
-        assert roa and roa.prefix == cidr
-        validity, routed = trie.get_validity(cidr, routed_origin)
-        assert (validity, routed) == (
-            ROAValidity.VALID,
-            ROARouted.ROUTED,
-        )
+        outcome = trie.get_roa_outcome(cidr, routed_origin)
+        assert outcome == ROAOutcome(ROAValidity.VALID, ROARouted.ROUTED)
         assert ROAValidity.is_unknown(validity) is False
         assert ROAValidity.is_invalid(validity) is False
         assert ROAValidity.is_valid(validity) is True
@@ -27,46 +22,42 @@ def test_tree():
     for cidr in non_routed_cidrs:
         trie.insert(cidr, non_routed_origin, cidr.prefixlen)
     for cidr in non_routed_cidrs:
-        roa = trie.get_roa(cidr, non_routed_origin)
-        assert roa and roa.prefix == cidr
-        assert trie.get_validity(cidr, routed_origin) == (
-            ROAValidity.INVALID_ORIGIN,
-            ROARouted.NON_ROUTED,
-        )
+        outcome = trie.get_roa_outcome(cidr, non_routed_origin)
+        assert outcome == ROAOutcome(ROAValidity.INVALID_ORIGIN, ROARouted.NON_ROUTED)
 
-    validity, routed = trie.get_validity(ip_network("1.0.0.0/8"), routed_origin)
-    assert validity == ROAValidity.UNKNOWN
-    assert routed == ROARouted.UNKNOWN
-    validity, routed = trie.get_validity(ip_network("255.255.255.255"), routed_origin)
-    assert validity == ROAValidity.UNKNOWN
-    assert routed == ROARouted.UNKNOWN
-    assert ROAValidity.is_unknown(validity) is True
-    assert ROAValidity.is_invalid(validity) is False
-    assert ROAValidity.is_valid(validity) is False
-    validity, routed = trie.get_validity(ip_network("1.2.4.0/24"), routed_origin)
-    assert validity == ROAValidity.INVALID_LENGTH
-    assert routed == ROARouted.ROUTED
-    assert ROAValidity.is_unknown(validity) is False
-    assert ROAValidity.is_invalid(validity) is True
-    assert ROAValidity.is_valid(validity) is False
-    validity, routed = trie.get_validity(ip_network("1.2.3.0/24"), routed_origin + 1)
-    assert validity == ROAValidity.INVALID_ORIGIN
-    assert routed == ROARouted.ROUTED
-    assert ROAValidity.is_unknown(validity) is False
-    assert ROAValidity.is_invalid(validity) is True
-    assert ROAValidity.is_valid(validity) is False
-    validity, routed = trie.get_validity(ip_network("1.2.4.0/24"), routed_origin + 1)
-    assert validity == ROAValidity.INVALID_LENGTH_AND_ORIGIN
-    assert routed == ROARouted.ROUTED
-    assert ROAValidity.is_unknown(validity) is False
-    assert ROAValidity.is_invalid(validity) is True
-    assert ROAValidity.is_valid(validity) is False
-    validity, routed = trie.get_validity(ip_network("1.2.0.255"), routed_origin)
-    assert validity == ROAValidity.INVALID_LENGTH
-    assert routed == ROARouted.ROUTED
-    validity, routed = trie.get_validity(ip_network("1.3.0.0/16"), routed_origin)
-    assert validity == ROAValidity.UNKNOWN
-    assert routed == ROARouted.UNKNOWN
-    validity, routed = trie.get_validity(ip_network("1.2.0.255"), routed_origin)
-    assert validity == ROAValidity.INVALID_LENGTH
-    assert routed == ROARouted.ROUTED
+    outcome = trie.get_outcome(ip_network("1.0.0.0/8"), routed_origin)
+    assert outcome.validity == ROAValidity.UNKNOWN
+    assert outcome.routed == ROARouted.UNKNOWN
+    outcome = trie.get_validity(ip_network("255.255.255.255"), routed_origin)
+    assert outcome.validity == ROAValidity.UNKNOWN
+    assert outcome.routed == ROARouted.UNKNOWN
+    assert ROAValidity.is_unknown(outcome.validity) is True
+    assert ROAValidity.is_invalid(outcome.validity) is False
+    assert ROAValidity.is_valid(outcome.validity) is False
+    outcome = trie.get_validity(ip_network("1.2.4.0/24"), routed_origin)
+    assert outcome.validity == ROAValidity.INVALID_LENGTH
+    assert outcome.routed == ROARouted.ROUTED
+    assert ROAValidity.is_unknown(outcome.validity) is False
+    assert ROAValidity.is_invalid(outcome.validity) is True
+    assert ROAValidity.is_valid(outcome.validity) is False
+    outcome = trie.get_validity(ip_network("1.2.3.0/24"), routed_origin + 1)
+    assert outcome.validity == ROAValidity.INVALID_ORIGIN
+    assert outcome.routed == ROARouted.ROUTED
+    assert ROAValidity.is_unknown(outcome.validity) is False
+    assert ROAValidity.is_invalid(outcome.validity) is True
+    assert ROAValidity.is_valid(outcome.validity) is False
+    outcome = trie.get_validity(ip_network("1.2.4.0/24"), routed_origin + 1)
+    assert outcome.validity == ROAValidity.INVALID_LENGTH_AND_ORIGIN
+    assert outcome.routed == ROARouted.ROUTED
+    assert ROAValidity.is_unknown(outcome.validity) is False
+    assert ROAValidity.is_invalid(outcome.validity) is True
+    assert ROAValidity.is_valid(outcome.validity) is False
+    outcome = trie.get_validity(ip_network("1.2.0.255"), routed_origin)
+    assert outcome.validity == ROAValidity.INVALID_LENGTH
+    assert outcome.routed == ROARouted.ROUTED
+    outcome = trie.get_validity(ip_network("1.3.0.0/16"), routed_origin)
+    assert outcome.validity == ROAValidity.UNKNOWN
+    assert outcome.routed == ROARouted.UNKNOWN
+    outcome = trie.get_validity(ip_network("1.2.0.255"), routed_origin)
+    assert outcome.validity == ROAValidity.INVALID_LENGTH
+    assert outcome.routed == ROARouted.ROUTED
