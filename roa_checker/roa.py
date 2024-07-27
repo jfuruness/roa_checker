@@ -13,9 +13,9 @@ class ROA:
 
     def __post_init__(self) -> None:
         if self.max_length is None:  # type: ignore
-            object.__setattr__(
+            object.__setattr__(  # type: ignore
                 self, "max_length", self.prefix.prefixlen
-            )  # type: ignore
+            )
 
     @cached_property
     def routed(self) -> ROARouted:
