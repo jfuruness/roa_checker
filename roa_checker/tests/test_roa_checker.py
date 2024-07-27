@@ -22,7 +22,7 @@ def test_tree():
     for cidr in non_routed_cidrs:
         trie.insert(cidr, ROA(cidr, non_routed_origin, cidr.prefixlen))
     for cidr in non_routed_cidrs:
-        outcome = trie.get_roa_outcome(cidr, non_routed_origin)
+        outcome = trie.get_roa_outcome(cidr, routed_origin)
         assert outcome == ROAOutcome(ROAValidity.INVALID_ORIGIN, ROARouted.NON_ROUTED)
 
     outcome = trie.get_roa_outcome(ip_network("1.0.0.0/8"), routed_origin)

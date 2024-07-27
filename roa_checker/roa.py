@@ -5,7 +5,7 @@ from ipaddress import IPv4Network, IPv6Network
 from .enums_and_dataclasses import ROAOutcome, ROARouted, ROAValidity
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class ROA:
     prefix: IPv4Network | IPv6Network
     origin: int
@@ -32,16 +32,19 @@ class ROA:
     ) -> ROAValidity:
         """Returns validity of prefix origin pair"""
 
-        if prefix.prefixlen > self.max_length and origin != self.origin:
-            return ROAValidity.INVALID_LENGTH_AND_ORIGIN
-        elif prefix.prefixlen > self.max_length and origin == self.origin:
-            return ROAValidity.INVALID_LENGTH
-        elif prefix.prefixlen <= self.max_length and origin != self.origin:
-            return ROAValidity.INVALID_ORIGIN
-        elif prefix.prefixlen <= self.max_length and origin == self.origin:
-            return ROAValidity.VALID
+        if self.covers_prefix(prefix):
+            if prefix.prefixlen > self.max_length and origin != self.origin:
+                return ROAValidity.INVALID_LENGTH_AND_ORIGIN
+            elif prefix.prefixlen > self.max_length and origin == self.origin:
+                return ROAValidity.INVALID_LENGTH
+            elif prefix.prefixlen <= self.max_length and origin != self.origin:
+                return ROAValidity.INVALID_ORIGIN
+            elif prefix.prefixlen <= self.max_length and origin == self.origin:
+                return ROAValidity.VALID
+            else:
+                raise NotImplementedError("This should never happen")
         else:
-            raise NotImplementedError("This should never happen")
+            return ROAValidity.UNKNOWN
 
     def get_outcome(self, prefix: IPv4Network | IPv6Network, origin: int) -> ROAOutcome:
         """Returns outcome of prefix origin pair"""
