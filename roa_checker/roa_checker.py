@@ -1,12 +1,9 @@
 from ipaddress import IPv4Network, IPv6Network
-from typing import Optional
-
-from lib_cidr_trie import CIDRTrie
 
 from .roa import ROA
 from .roa_trie import ROATrie
 from .roa_tries import IPv4ROATrie, IPv6ROATrie
-from .enums_and_dataclasses import ROARouted, ROAValidity, ROAOutcome
+from .enums_and_dataclasses import ROAOutcome
 
 
 class ROAChecker:

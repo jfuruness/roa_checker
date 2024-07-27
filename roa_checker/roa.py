@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from functools import cached_property
 from ipaddress import IPv4Network, IPv6Network
-from typing import Optional
 
 from .enums_and_dataclasses import ROAOutcome, ROARouted, ROAValidity
 
@@ -14,7 +13,11 @@ class ROA:
 
     def __post_init__(self) -> None:
         if self.max_length is None:  # type: ignore
-            object.__setattr__(self, "max_length", self.prefix.prefixlen)  # type: ignore
+            object.__setattr__(
+                self,
+                "max_length",
+                self.prefix.prefixlen
+            )  # type: ignore
 
     @cached_property
     def routed(self) -> ROARouted:
