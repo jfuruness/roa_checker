@@ -10,21 +10,21 @@ from .enums_and_dataclasses import ROAOutcome, ROARouted, ROAValidity
 class ROA:
     prefix: IPv4Network | IPv6Network
     origin: int
-    max_length: Optional[int] = None
+    max_length: int = None  # type: ignore
 
     def __post_init__(self) -> None:
-        if self.max_length is None:
-            object.__setattr__(self, "max_length", self.prefix.prefixlen)
+        if self.max_length is None:  # type: ignore
+            object.__setattr__(self, "max_length", self.prefix.prefixlen)  # type: ignore
 
     @cached_property
-    def roa_routed(self) -> ROARouted:
+    def routed(self) -> ROARouted:
         return ROARouted.NON_ROUTED if self.origin == 0 else ROARouted.ROUTED
 
     def covers_prefix(self, prefix: IPv4Network | IPv6Network) -> bool:
         """Returns True if the ROA covers the prefix"""
 
         # NOTE: subnet_of includes the original prefix (I checked lol)
-        return prefix.subnet_of(self.prefix)
+        return prefix.subnet_of(self.prefix)  # type: ignore
 
     def get_validity(
         self, prefix: IPv4Network | IPv6Network, origin: int
@@ -46,4 +46,4 @@ class ROA:
         """Returns outcome of prefix origin pair"""
 
         validity = self.get_validity(prefix, origin)
-        return ROAOutcome(validity=validity, routed=self.roa_routed)
+        return ROAOutcome(validity=validity, routed=self.routed)

@@ -1,8 +1,9 @@
 from lib_cidr_trie import CIDRTrie
 from lib_cidr_trie.cidr_trie import PrefixType
 
+from .roas_node import ROAsNode
+from .enums_and_dataclasses import ROARouted, ROAValidity, ROAOutcome
 from .roa import ROA
-from .enums import ROARouted, ROAValidity
 
 
 class ROATrie(CIDRTrie[PrefixType]):
@@ -26,13 +27,14 @@ class ROATrie(CIDRTrie[PrefixType]):
         self._validate_prefix(prefix)
         bits = self._get_binary_str_from_prefix(prefix)
         node = self.root
-        roas = list()
+        roas: list[ROA] = list()
         for bit in bits[: prefix.prefixlen]:
             next_node = node.right if bool(int(bit)) else node.left
             if next_node is None:
                 return frozenset(roas)
             elif next_node.prefix is not None:
                 # Add ROAs if they are relevant
+                assert isinstance(next_node, ROAsNode), "for mypy"
                 for roa in next_node.roas:
                     if roa.covers_prefix(prefix):
                         roas.append(roa)
@@ -53,6 +55,8 @@ class ROATrie(CIDRTrie[PrefixType]):
 
         if relevant_roas:
             # Return the best ROAOutcome
-            return sorted([x.get_roa_outcome(x) for x in relevant_roas])[0]
+            rv = sorted([x.get_outcome(prefix, origin) for x in relevant_roas])[0]
+            assert isinstance(rv, ROAOutcome), "for mypy"
+            return rv
         else:
             return ROAOutcome(validity=ROAValidity.UNKNOWN, routed=ROARouted.UNKNOWN)

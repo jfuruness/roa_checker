@@ -6,7 +6,7 @@ from lib_cidr_trie import CIDRTrie
 from .roa import ROA
 from .roa_trie import ROATrie
 from .roa_tries import IPv4ROATrie, IPv6ROATrie
-from .enums import ROARouted, ROAValidity
+from .enums_and_dataclasses import ROARouted, ROAValidity, ROAOutcome
 
 
 class ROAChecker:
@@ -29,7 +29,7 @@ class ROAChecker:
         """Gets the ROA covering prefix-origin pair"""
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
-        assert isinstance(trie, CIDRTrie)
+        assert isinstance(trie, ROATrie)
         return trie.get_relevant_roas(prefix)
 
     def get_roa_outcome(

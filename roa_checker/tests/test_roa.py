@@ -34,7 +34,7 @@ def test_roa_validity_invalid_length():
 
 
 def test_roa_validity_invalid_origin():
-    roa = ROA(roa.add_data(ip_network("1.2.0.0/16"), 1))
+    roa = ROA(ip_network("1.2.0.0/16"), 1)
     validity = roa.get_validity(ip_network("1.2.0.0/16"), 0)
     assert validity == ROAValidity.INVALID_ORIGIN
     outcome = roa.get_outcome(ip_network("1.2.0.0/16"), 0)

@@ -4,14 +4,15 @@ from typing import Optional
 
 from lib_cidr_trie import CIDRNode
 
-from .enums import ROARouted, ROAValidity
+from .enums_and_dataclasses import ROARouted, ROAValidity
+from .roa import ROA
 
 
 class ROAsNode(CIDRNode):
     def __init__(self, *args, **kwargs):
         """Initializes the ROA node"""
 
-        super(ROA, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.roas: set[ROA] = set()
 
     # Mypy doesn't understand *args in super class
