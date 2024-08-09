@@ -151,6 +151,7 @@ tox
 ## History
 * [roa\_checker](#roa_checker)
 
+* 3.0.1 Updated dependencies for testing only
 * 3.0.0 Added ta attribute to ROAs for the ROACollector, modified properties in the ROA for BGPy compatibility
 * 2.0.0
     * Previously the ROA checker would only look at the ROAs that were the most specific prefix (and then would check all of those ROAs)

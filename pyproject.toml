@@ -1,6 +1,6 @@
 [project]
 name = "roa_checker"
-version = "3.0.0"
+version = "3.0.1"
 description = "Fast prefix origin pair lookups"
 readme = "README.md"
 authors = [
@@ -42,15 +42,15 @@ homepage = "https://github.com/jfuruness/roa_checker.git"
 
 [project.optional-dependencies]
 test = [
-    "black==24.2.0",
-    "pre-commit==3.6.2",
-    "types-requests==2.31.0.20240218",
-    "types-PyYAML==6.0.12.12",
-    "mypy==1.8.0",
-    "flake8==7.0.0",
-    "tox==4.13.0",
-    "pytest-xdist==3.5.0",
-    "ruff==0.2.2",
+    "black==24.8.0",
+    "pre-commit==3.8.0",
+    "types-requests==2.32.0.20240712",
+    "types-PyYAML==6.0.12.20240808",
+    "mypy==1.11.1",
+    "flake8==7.1.1",
+    "tox==4.17.1",
+    "pytest-xdist==3.6.1",
+    "ruff==0.5.7",
 ]
 
 [tool.setuptools.package-data]
