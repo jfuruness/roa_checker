@@ -83,23 +83,6 @@ def test_tree():
     assert outcome.routed_status == ROARouted.ROUTED
 ```
 
-def test_multiple_differing_roas():
-    """Testing that all ROAs are considered
-
-    This test has one less specific ROA that is valid with a long max length
-    and one more specific roa that is invalid
-
-    This should result in a valid ROA
-    """
-
-    # TODO: Break up into unit tests
-    trie = ROAChecker()
-    valid_ip_addr = ip_network("1.2.0.0/16")
-    invalid_ip_addr = ip_network("1.2.3.0/24")
-    trie.insert(valid_ip_addr, ROA(valid_ip_addr, 1, 24))
-    trie.insert(invalid_ip_addr, ROA(invalid_ip_addr, 2, 24))
-    assert trie.get_roa_outcome(invalid_ip_addr, 1).validity == ROAValidity.VALID
-
 ## Installation
 * [roa\_checker](#roa_checker)
 
