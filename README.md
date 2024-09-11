@@ -1,9 +1,9 @@
 Informational Badges:
 
-[![PyPI version](https://badge.fury.io/py/roa_collector.svg)](https://badge.fury.io/py/roa_collector)
+[![PyPI version](https://badge.fury.io/py/roa_checker.svg)](https://badge.fury.io/py/roa_checker)
 ![PyPy](https://img.shields.io/badge/PyPy-7.3.17-blue)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/roa_collector)](https://pypi.org/project/roa_collector/)
-![Tests](https://github.com/jfuruness/roa_collector/actions/workflows/tests.yml/badge.svg)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/roa_checker)](https://pypi.org/project/roa_checker/)
+![Tests](https://github.com/jfuruness/roa_checker/actions/workflows/tests.yml/badge.svg)
 ![Linux](https://img.shields.io/badge/os-Linux-blue.svg)
 ![macOS Intel](https://img.shields.io/badge/os-macOS_Intel-lightgrey.svg)
 ![macOS ARM](https://img.shields.io/badge/os-macOS_ARM-lightgrey.svg)
