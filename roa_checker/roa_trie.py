@@ -1,9 +1,9 @@
 from lib_cidr_trie import CIDRTrie
 from lib_cidr_trie.cidr_trie import PrefixType
 
-from .roas_node import ROAsNode
-from .enums_and_dataclasses import ROARouted, ROAValidity, ROAOutcome
+from .enums_and_dataclasses import ROAOutcome, ROARouted, ROAValidity
 from .roa import ROA
+from .roas_node import ROAsNode
 
 
 class ROATrie(CIDRTrie[PrefixType]):

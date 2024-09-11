@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from functools import cached_property
 from ipaddress import IPv4Network, IPv6Network
-from typing import Optional
 
 from .enums_and_dataclasses import ROAOutcome, ROARouted, ROAValidity
 
@@ -12,10 +11,10 @@ class ROA:
     origin: int
     max_length: int = None  # type: ignore
     # RIPE, ARIN, etc. Used by ROACollector, don't remove
-    ta: Optional[str] = None
+    ta: str | None = None
 
     def __post_init__(self) -> None:
-        if self.max_length is None:  # type: ignore
+        if self.max_length is None:
             object.__setattr__(  # type: ignore
                 self, "max_length", self.prefix.prefixlen
             )
@@ -36,6 +35,7 @@ class ROA:
         """Returns True if the ROA covers the prefix"""
 
         # NOTE: subnet_of includes the original prefix (I checked lol)
+        # mypy wants this to be the same type of prefix but this doesn't matter
         return prefix.subnet_of(self.prefix)  # type: ignore
 
     def get_validity(

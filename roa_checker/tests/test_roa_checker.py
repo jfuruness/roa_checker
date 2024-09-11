@@ -1,6 +1,6 @@
 from ipaddress import ip_network
 
-from roa_checker import ROAChecker, ROARouted, ROAValidity, ROAOutcome, ROA
+from roa_checker import ROA, ROAChecker, ROAOutcome, ROARouted, ROAValidity
 
 
 def test_tree():

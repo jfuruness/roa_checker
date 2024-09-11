@@ -1,4 +1,5 @@
 include README.md
 include LICENSE.txt
-include roa_checker/py.typed
+global-include **.typed
+global-include **.pyi
 include tox.ini
