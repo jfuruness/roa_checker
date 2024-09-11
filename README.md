@@ -129,12 +129,15 @@ After installation for development:
 ```bash
 cd roa_checker
 python3 -m pytest roa_checker
+ruff check roa_checker
+ruff format roa_checker
 ```
 
 To run all tests:
 
 ```bash
-tox
+cd roa_checker
+tox --skip-missing-interpreters
 ```
 
 ## Development/Contributing
@@ -150,6 +153,7 @@ tox
 ## History
 * [roa\_checker](#roa_checker)
 
+* 3.0.2 Updated deps, testing, gh actions, etc
 * 3.0.1 Updated dependencies for testing only
 * 3.0.0 Added ta attribute to ROAs for the ROACollector, modified properties in the ROA for BGPy compatibility
 * 2.0.0
