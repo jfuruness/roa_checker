@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "roa_checker"
-version = "3.0.2"
+version = "3.0.3"
 description = "Fast prefix origin pair lookups"
 readme = "README.md"
 authors = [
@@ -45,7 +45,7 @@ classifiers = [
 
 requires-python = ">=3.10"
 dependencies = [
-    "lib_cidr_trie==1.2.5"
+    "lib_cidr_trie==1.2.6"
 ]
 
 [project.urls]
@@ -77,7 +77,7 @@ roa_checker = ["py.typed"]
 # https://stackoverflow.com/a/76214408/8903959
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["roa_checker"]
+exclude = ["scripts"]
 
 [tool.pytest.ini_options]
 addopts = "-rxXs -v"  # Shows reasons for skipping, xfailing, etc
