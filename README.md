@@ -153,6 +153,7 @@ tox --skip-missing-interpreters
 ## History
 * [roa\_checker](#roa_checker)
 
+* 3.1.0 Added get_roa_outcome_w_prefix_str_cached. It caches everything, don't cause a mem err!
 * 3.0.2 Updated deps, testing, gh actions, etc
 * 3.0.1 Updated dependencies for testing only
 * 3.0.0 Added ta attribute to ROAs for the ROACollector, modified properties in the ROA for BGPy compatibility

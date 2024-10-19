@@ -1,4 +1,5 @@
-from ipaddress import IPv4Network, IPv6Network
+from functools import cache
+from ipaddress import IPv4Network, IPv6Network, ip_network
 
 from .enums_and_dataclasses import ROAOutcome
 from .roa import ROA
@@ -14,6 +15,7 @@ class ROAChecker:
 
         self.ipv4_trie = IPv4ROATrie()
         self.ipv6_trie = IPv6ROATrie()
+        self.get_roa_outcome_w_prefix_str_cached.cache_clear()
 
     def insert(self, prefix: IPv4Network | IPv6Network, roa: ROA) -> None:
         """Inserts a prefix into the tries"""
@@ -37,3 +39,19 @@ class ROAChecker:
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
         assert isinstance(trie, ROATrie), "for mypy"
         return trie.get_roa_outcome(prefix, origin)
+
+    # NOTE: since this is called so often, we leave it as cache
+    # since it's significantly faster
+    # It literally says cached in the name, this better not cause leaks
+    @cache  # noqa: B019
+    def get_roa_outcome_w_prefix_str_cached(
+        self,
+        prefix_str: str,
+        origin: int,
+    ) -> ROAOutcome:
+        """Returns ROA outcome for a prefix (str) and origin, and caches the result"""
+
+        return self.get_roa_outcome(ip_network(prefix_str), origin)
+
+    def clear(self):
+        self.__init__()  # type: ignore
