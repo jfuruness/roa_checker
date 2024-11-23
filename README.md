@@ -152,6 +152,7 @@ tox --skip-missing-interpreters
 ## History
 * [roa\_checker](#roa_checker)
 
+* 3.1.2 Removed windows from the classifiers in pyproject.toml
 * 3.1.1 Updated dependencies and ruff settings and removed official windows support (since matplotlib doesn't work on windows with pypy in CI/CD)
 * 3.1.0 Added get_roa_outcome_w_prefix_str_cached. It caches everything, don't cause a mem err!
 * 3.0.2 Updated deps, testing, gh actions, etc

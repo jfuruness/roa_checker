@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "roa_checker"
-version = "3.1.1"
+version = "3.1.2"
 description = "Fast prefix origin pair lookups"
 readme = "README.md"
 authors = [
@@ -37,7 +37,6 @@ classifiers = [
     "License :: OSI Approved :: BSD License",
     "Intended Audience :: Developers",
     "Operating System :: POSIX :: Linux",
-    "Operating System :: Microsoft :: Windows",
     "Operating System :: MacOS",
     "Operating System :: MacOS :: MacOS X",
     "Topic :: Security",
