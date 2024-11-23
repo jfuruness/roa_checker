@@ -29,7 +29,8 @@ class ROAChecker:
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
         assert isinstance(trie, ROATrie)
-        return trie.get_relevant_roas(prefix)
+        # Mypy doesn't understand I match the proper trie with the prefix type
+        return trie.get_relevant_roas(prefix)  # type: ignore
 
     def get_roa_outcome(
         self, prefix: IPv4Network | IPv6Network, origin: int
@@ -38,7 +39,8 @@ class ROAChecker:
 
         trie = self.ipv4_trie if prefix.version == 4 else self.ipv6_trie
         assert isinstance(trie, ROATrie), "for mypy"
-        return trie.get_roa_outcome(prefix, origin)
+        # mypy doesn't understand I match the proper trie with the prefix type
+        return trie.get_roa_outcome(prefix, origin)  # type: ignore
 
     # NOTE: since this is called so often, we leave it as cache
     # since it's significantly faster

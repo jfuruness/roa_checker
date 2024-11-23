@@ -80,13 +80,14 @@ def test_multiple_differing_roas():
     trie.insert(invalid_ip_addr, ROA(invalid_ip_addr, 2, 24))
     assert trie.get_roa_outcome(invalid_ip_addr, 1).validity == ROAValidity.VALID
 
+
 def test_get_roa_outcome_w_prefix_str_cached():
     trie = ROAChecker()
     valid_ip_addr = ip_network("1.2.0.0/16")
     invalid_ip_addr = ip_network("1.2.3.0/24")
     trie.insert(valid_ip_addr, ROA(valid_ip_addr, 1, 24))
     trie.insert(invalid_ip_addr, ROA(invalid_ip_addr, 2, 24))
-    assert trie.get_roa_outcome_w_prefix_str_cached(
-        str(invalid_ip_addr),
-        1
-    ).validity == ROAValidity.VALID
+    assert (
+        trie.get_roa_outcome_w_prefix_str_cached(str(invalid_ip_addr), 1).validity
+        == ROAValidity.VALID
+    )
