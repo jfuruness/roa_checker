@@ -29,7 +29,7 @@ This package contains a trie of ROAs for fast prefix-origin pair lookups
 * [Testing](#testing)
 * [Development/Contributing](#developmentcontributing)
 * [History](#history)
-* [Licence](#license)
+* [License](#license)
 
 ## Usage
 * [roa\_checker](#roa_checker)
