@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "roa_checker"
-version = "3.1.2"
+version = "3.1.3"
 description = "Fast prefix origin pair lookups"
 readme = "README.md"
 authors = [
@@ -31,6 +31,8 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Environment :: Console",
@@ -53,13 +55,11 @@ homepage = "https://github.com/jfuruness/roa_checker.git"
 
 [project.optional-dependencies]
 test = [
-    "pytest==8.3.3",
-    "pre-commit==4.0.1",
-    "mypy==1.13.0",
-    "flake8==7.1.1",
-    "tox==4.23.2",
-    "pytest-xdist==3.6.1",
-    "ruff==0.8.0",
+    "pytest==9.0.2",
+    "pre-commit==4.5.1",
+    "mypy==1.19.1",
+    "tox==4.34.1",
+    "ruff==0.14.13",
 ]
 
 [tool.setuptools]
@@ -206,10 +206,6 @@ ignore = [
     # which is wrong. If something is deprecated, it'll raise a DeprecationWarning
     # Since this only had false positives for me, omitting it
     "UP035",
-    # Wants to turn isinstance(a, (x, y)) into isinstance(a, x | y)
-    # imo the first version is totally fine and most code will be formatted that way
-    # And the pep doesn't even advocate for switching lol
-    "UP038",
     # Ensures that you don't have pass in blank funcs that have a docstring
     # imo blank funcs are more readable with a pass than without a pass
     # because without a pass, maybe the developer just didn't finish the func

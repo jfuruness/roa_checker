@@ -12,10 +12,7 @@ class ROAsNode(CIDRNode):
         super().__init__(*args, **kwargs)
         self.roas: set[ROA] = set()
 
-    # Mypy doesn't understand *args in super class
-    def add_data(  # type: ignore
-        self, prefix: IPv4Network | IPv6Network, roa: ROA
-    ) -> None:
+    def add_data(self, prefix: IPv4Network | IPv6Network, roa: ROA) -> None:
         """Adds ROA to the node for that prefix"""
 
         self.prefix: IPv4Network | IPv6Network = prefix
