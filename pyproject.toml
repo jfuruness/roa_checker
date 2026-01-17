@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "roa_checker"
-version = "3.1.4"
+version = "3.1.5"
 description = "Fast prefix origin pair lookups"
 readme = "README.md"
 authors = [

@@ -152,6 +152,7 @@ tox --skip-missing-interpreters
 ## History
 * [roa\_checker](#roa_checker)
 
+* 3.1.5 Removed duplicate mac version from github actions
 * 3.1.4 Upgrading tox pypy version
 * 3.1.3 Upgrading optional dependencies and supported Python versions
 * 3.1.2 Removed windows from the classifiers in pyproject.toml
